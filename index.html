@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="Alpha Profiles — a curated directory of profiles.">
+  <title>Alpha Profiles</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Alpha Profiles home">
+      <span class="brand-mark">A</span>
+      <span>ALPHA<span class="brand-light"> PROFILES</span></span>
+    </a>
+    <span class="status"><span class="status-dot"></span> PROFILE DIRECTORY</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow"><span></span> YOUR DIGITAL UNIVERSE</div>
+      <h1>Alpha <span>Profiles</span></h1>
+      <p class="hero-description">One place. Every identity. Explore the profiles.</p>
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-number" id="profileCount">—</span>
+          <span class="stat-label">PROFILES</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">∞</span>
+          <span class="stat-label">POSSIBILITIES</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="directory" aria-label="Profile directory">
+      <div class="directory-heading">
+        <div>
+          <span class="section-kicker">THE COLLECTION</span>
+          <h2>Explore profiles<span class="heading-period">.</span></h2>
+        </div>
+        <span class="live-label"><span></span> DIRECTORY ONLINE</span>
+      </div>
+
+      <label class="search-box" for="profileSearch">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg>
+        <input id="profileSearch" type="search" placeholder="Search profiles by name..." autocomplete="off">
+        <kbd>/</kbd>
+      </label>
+
+      <div class="results-line">
+        <span id="resultLabel">Loading profiles...</span>
+        <span class="sort-label">ALPHA INDEX <span>///</span></span>
+      </div>
+
+      <div id="profileList" class="profile-list" aria-live="polite">
+        <div class="loading-state"><span class="loader"></span><span>Loading directory</span></div>
+      </div>
+
+      <div id="emptyState" class="empty-state" hidden>
+        <span class="empty-symbol">∅</span>
+        <h3>No profiles found</h3>
+        <p>Try another name or check your search.</p>
+      </div>
+
+      <div id="errorState" class="error-state" hidden>
+        <h3>Directory unavailable</h3>
+        <p>Check that <code>Profiles.txt</code> exists beside this page and is published.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>ALPHA PROFILES <span class="footer-dot">/</span> PERSONAL DIRECTORY</span>
+    <span>BUILT FOR YOUR UNIVERSE <span class="footer-mark">A.</span></span>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
