@@ -121,8 +121,7 @@
     if (!view.length){
       $status.innerHTML = '<div class="msg">' + (all.length ? 'No profile matches your search.' : 'No profiles yet.') + '</div>';
     }
-    $count.textContent = !all.length ? '' :
-      (view.length === all.length ? all.length + (all.length > 1 ? ' profiles' : ' profile') : view.length + ' of ' + all.length);
+    $count.textContent = (all.length && view.length !== all.length) ? view.length + ' of ' + all.length : '';
     renderMore();
     fill();
   }
