@@ -9,7 +9,6 @@ const clearSearch=document.getElementById("clearSearch");
 const emptyState=document.getElementById("emptyState");
 const errorState=document.getElementById("errorState");
 let profiles=[],renderId=0;
-
 function parseProfiles(raw){
   return raw.replace(/^\uFEFF/,"").split(/^\s*\$\s*$/m).map(block=>{
     const lines=block.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
@@ -25,9 +24,8 @@ function initials(name){
   return (words.length>1?words[0][0]+words[1][0]:(words[0]||"A").slice(0,2)).toUpperCase();
 }
 function createCard(profile){
-  const card=document.createElement("a");
-  card.className="profile-card";card.href=httpUrl(profile.url)||"#";
-  card.target="_blank";card.rel="noopener noreferrer";
+  const card=document.createElement("a");card.className="profile-card";
+  card.href=httpUrl(profile.url)||"#";card.target="_blank";card.rel="noopener noreferrer";
   card.setAttribute("aria-label",profile.name+" — open profile in a new tab");
   const avatarWrap=document.createElement("div");avatarWrap.className="avatar-wrap";
   const photoUrl=httpUrl(profile.photo);
@@ -60,38 +58,25 @@ function render(){
     const fragment=document.createDocumentFragment(),end=Math.min(index+batchSize,results.length);
     while(index<end)fragment.appendChild(createCard(results[index++]));
     list.appendChild(fragment);
-    if(index<results.length){
-      if("requestIdleCallback"in window)requestIdleCallback(appendBatch,{timeout:120});
-      else setTimeout(appendBatch,0);
-    }
+    if(index<results.length){if("requestIdleCallback"in window)requestIdleCallback(appendBatch,{timeout:120});else setTimeout(appendBatch,0)}
   }
   if(results.length)appendBatch();
 }
 async function load(){
-  try{
-    const response=await fetch(DATA_FILE,{cache:"no-store"});
-    if(!response.ok)throw new Error("HTTP "+response.status);
+  try{const response=await fetch(DATA_FILE,{cache:"no-store"});if(!response.ok)throw new Error("HTTP "+response.status);
     profiles=parseProfiles(await response.text());render();
-  }catch(err){
-    list.replaceChildren();errorState.hidden=false;
-    console.error("Alpha Profiles could not load Profiles.txt",err);
-  }
+  }catch(err){list.replaceChildren();errorState.hidden=false;console.error("Could not load Profiles.txt",err)}
 }
 searchToggle.addEventListener("click",()=>{
   const opening=searchPanel.hidden;searchPanel.hidden=!opening;
-  searchToggle.setAttribute("aria-expanded",String(opening));
-  searchToggle.setAttribute("aria-label",opening?"Close search":"Open search");
-  if(opening)searchInput.focus();
-  else{searchInput.value="";clearSearch.hidden=true;render();}
+  searchToggle.setAttribute("aria-expanded",String(opening));searchToggle.setAttribute("aria-label",opening?"Close search":"Open search");
+  if(opening)searchInput.focus();else{searchInput.value="";clearSearch.hidden=true;render()}
 });
-searchInput.addEventListener("input",()=>{clearSearch.hidden=!searchInput.value;render();});
-clearSearch.addEventListener("click",()=>{searchInput.value="";clearSearch.hidden=true;render();searchInput.focus();});
+searchInput.addEventListener("input",()=>{clearSearch.hidden=!searchInput.value;render()});
+clearSearch.addEventListener("click",()=>{searchInput.value="";clearSearch.hidden=true;render();searchInput.focus()});
 document.addEventListener("keydown",event=>{
-  if(event.key==="Escape"&&!searchPanel.hidden){
-    searchPanel.hidden=true;searchToggle.setAttribute("aria-expanded","false");
-    searchToggle.setAttribute("aria-label","Open search");searchInput.value="";
-    clearSearch.hidden=true;render();searchToggle.focus();
-  }
+  if(event.key==="Escape"&&!searchPanel.hidden){searchPanel.hidden=true;searchToggle.setAttribute("aria-expanded","false");
+    searchToggle.setAttribute("aria-label","Open search");searchInput.value="";clearSearch.hidden=true;render();searchToggle.focus()}
 });
 load();
 })();

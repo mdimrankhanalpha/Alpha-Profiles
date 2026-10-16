@@ -1,15 +1,9 @@
-# Alpha Profiles — Black Minimal
+# Alpha Profiles — Responsive Black Edition
 
-A clean black profile directory inspired by the reference image. It has no login, account creation, notification labels, or large hero section. The top bar contains only the site name and a small search icon.
+This version removes the visible “Alpha Profiles” heading. The top bar contains only a small search icon. The page uses a black background and responsive profile cards with circular photos, names, URLs, and right-side arrows.
 
-## Files
-- `index.html` — page structure
-- `style.css` — responsive black design for mobile, tablet, and desktop
-- `script.js` — loads profiles and handles search
-- `Profiles.txt` — profile data to edit
-
-## Add a profile
-Add a record to `Profiles.txt` using this exact format:
+## Add or update profiles
+Edit only `Profiles.txt`. Use this format for each entry:
 
 ```text
 $
@@ -19,9 +13,9 @@ https://example.com/profile
 $
 ```
 
-The three lines are the profile name, direct photo URL, and profile destination URL. Keep `$` on a line by itself between records. Do not write `Pn`, `Pp`, or `Ur` in the file.
+The lines are the profile name, direct photo URL, and profile URL. Keep `$` on a line by itself between records. Do not write Pn, Pp, or Ur.
 
 ## Publish
-Upload all five files into the same folder in your GitHub Pages repository and publish that folder using **Settings → Pages**. Test the published website rather than opening `index.html` with `file://`, because browsers generally block loading `Profiles.txt` that way.
+Upload all five files to the same folder in your GitHub Pages repository and publish it through Settings → Pages. Test the published website rather than opening index.html directly as a file.
 
-The example profiles and photo URLs in `Profiles.txt` are placeholders. Replace them with your actual names, public photo URLs, and destination URLs. The layout is responsive, but no site can guarantee zero lag or perfect rendering on every device and arbitrarily large data set.
+The supplied profiles and image links are examples; replace them with your own. The responsive layout adapts card dimensions and text to screen width, but browser/device rendering can still vary.
