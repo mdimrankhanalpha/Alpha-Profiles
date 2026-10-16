@@ -122,10 +122,14 @@ svg{display:block}
   padding:2px;background:var(--grad);
 }
 .avatar .in{
-  width:100%;height:100%;border-radius:50%;background:#111;overflow:hidden;border:2px solid #000;
+  position:relative;width:100%;height:100%;border-radius:50%;background:#111;overflow:hidden;border:2px solid #000;
   display:grid;place-items:center;font-weight:700;font-size:1.35rem;color:#fff;
 }
-.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar .media{
+  position:absolute;inset:0;width:100%;height:100%;display:block;
+  object-fit:cover;object-position:center center; /* always crops to the centre square */
+  background:#111;pointer-events:none;
+}
 .meta{flex:1;min-width:0}
 .name{
   font-size:clamp(1rem,3.9vw,1.18rem);font-weight:600;line-height:1.3;

@@ -47,7 +47,65 @@
   function hostOf(u){
     try{ return new URL(u).hostname.replace(/^www\./, ''); }catch(e){ return ''; }
   }
-  function safeImg(p){ return /^(javascript|vbscript):/i.test(p) ? '' : p; }
+
+  /* ---------- Media helpers (photo or video) ---------- */
+  const VIDEO_EXT = /\.(mp4|webm|mov|m4v|ogv|ogg|3gp)$/i;
+  function fixMedia(u){
+    u = (u || '').trim();
+    if (!u || /^(javascript|vbscript|data:text)/i.test(u)) return '';
+    // GitHub "blob" / "raw" page links -> real file link
+    let m = u.match(/^https?:\/\/(?:www\.)?github\.com\/([^\/]+)\/([^\/]+)\/(?:blob|raw)\/(.+?)(?:[?#].*)?$/i);
+    if (m) return 'https://raw.githubusercontent.com/' + m[1] + '/' + m[2] + '/' + m[3];
+    // Google Drive share link
+    m = u.match(/^https?:\/\/drive\.google\.com\/file\/d\/([^\/?#]+)/i);
+    if (m) return 'https://drive.google.com/uc?export=view&id=' + m[1];
+    return u;
+  }
+  function isVideo(u){ return VIDEO_EXT.test(u.split('#')[0].split('?')[0]); }
+
+  // videos only load + play while near the screen (keeps weak phones smooth)
+  const videoIO = 'IntersectionObserver' in window ? new IntersectionObserver(es => {
+    for (const e of es){
+      const v = e.target;
+      if (e.isIntersecting){
+        if (!v.getAttribute('src')){ v._off = false; v.src = v.dataset.src + '#t=0.001'; }
+        const p = v.play(); if (p && p.catch) p.catch(() => {});
+      } else {
+        v._off = true;
+        v.pause();
+        if (v.getAttribute('src')){ v.removeAttribute('src'); v.load(); }
+      }
+    }
+  }, { rootMargin: '250px 0px' }) : null;
+
+  function addImage(box, src, onFail){
+    const img = new Image();
+    img.className = 'media';
+    img.alt = '';
+    img.decoding = 'async';
+    img.loading = 'lazy';
+    img.referrerPolicy = 'no-referrer';
+    img.onerror = () => { img.remove(); onFail(); };
+    img.src = src;
+    box.appendChild(img);
+  }
+  function addVideo(box, src, onFail){
+    const v = document.createElement('video');
+    v.className = 'media';
+    v.muted = true; v.defaultMuted = true; v.loop = true; v.playsInline = true;
+    v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
+    v.setAttribute('disablepictureinpicture', ''); v.setAttribute('disableremoteplayback', '');
+    v.preload = 'metadata';
+    v.dataset.src = src;
+    v.onerror = () => {
+      if (v._off || !v.getAttribute('src')) return;
+      if (videoIO) videoIO.unobserve(v);
+      v.remove(); onFail();
+    };
+    box.appendChild(v);
+    if (videoIO) videoIO.observe(v);
+    else { v.autoplay = true; v.src = src; }
+  }
 
   /* ---------- Render ---------- */
   function makeCard(p){
@@ -64,18 +122,10 @@
     const inn = document.createElement('div');
     inn.className = 'in';
     const initial = () => { inn.textContent = (Array.from(p.name)[0] || '?').toUpperCase(); };
-    const src = safeImg(p.photo);
-    if (src){
-      const img = new Image();
-      img.alt = '';
-      img.width = 68; img.height = 68;
-      img.decoding = 'async';
-      img.loading = 'lazy';
-      img.referrerPolicy = 'no-referrer';
-      img.onerror = () => { img.remove(); initial(); };
-      img.src = src;
-      inn.appendChild(img);
-    } else initial();
+    const src = fixMedia(p.photo);
+    if (!src) initial();
+    else if (isVideo(src)) addVideo(inn, src, () => addImage(inn, src, initial));
+    else addImage(inn, src, () => addVideo(inn, src, initial));
     av.appendChild(inn);
 
     const meta = document.createElement('div');
