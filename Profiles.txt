@@ -3,23 +3,3 @@ Zephiron Valekar
 https://placehold.co/200x200/242424/ffffff?text=Z
 https://example.com/zephiron
 $
-Al Pha
-https://placehold.co/200x200/111111/ffffff?text=A
-https://example.com/alpha
-$
-Chumki Akter Runa
-https://placehold.co/200x200/252525/ffffff?text=C
-https://example.com/chumki
-$
-MD Imran Khan
-https://placehold.co/200x200/181818/ffffff?text=I
-https://github.com/mdimrankhanalpha
-$
-AC Ayaan
-https://placehold.co/200x200/202020/ffffff?text=A
-https://example.com/ayaan
-$
-Ronaldo Goats
-https://placehold.co/200x200/151515/ffffff?text=R
-https://example.com/ronaldo
-$
