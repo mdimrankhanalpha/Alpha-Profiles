@@ -1,30 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<meta name="description" content="Alpha Profiles">
 <title>Profiles</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="toolbar">
-  <span class="toolbar-space" aria-hidden="true"></span>
-  <button class="search-toggle" id="searchToggle" type="button" aria-label="Open search" aria-expanded="false">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg>
-  </button>
-</header>
-<form class="search-panel" id="searchPanel" role="search" hidden>
-  <label class="visually-hidden" for="searchInput">Search profiles</label>
-  <input id="searchInput" type="search" placeholder="Search profiles..." autocomplete="off">
-  <button id="clearSearch" type="button" aria-label="Clear search" hidden>×</button>
-</form>
-<main>
-  <div id="profileList" class="profile-list" aria-live="polite"><div class="loading">Loading profiles…</div></div>
-  <div id="emptyState" class="message" hidden>No profiles found.</div>
-  <div id="errorState" class="message" hidden>Couldn't load profiles. Check that Profiles.txt is published beside this page.</div>
-</main>
-<script src="script.js" defer></script>
+
+<div class="topbar" id="topbar">
+  <div class="topbar-in">
+    <div class="brand" aria-hidden="true">
+      <span class="logo"><i><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"/></svg></i></span>
+    </div>
+
+    <div class="search">
+      <div class="search-field" id="field">
+        <input id="q" type="text" inputmode="search" enterkeyhint="search" placeholder="Search profiles" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Search profiles" tabindex="-1">
+        <button class="clear" id="clear" type="button" aria-label="Clear search">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <button class="icon-btn" id="searchBtn" type="button" aria-label="Search" aria-expanded="false" aria-controls="field">
+        <svg class="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <svg class="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <h1>Profiles</h1>
+    <div class="count" id="count" aria-live="polite"></div>
+    <div class="divider" aria-hidden="true">
+      <b></b><span></span><em></em><span></span><b></b>
+    </div>
+  </header>
+
+  <main>
+    <ul class="list" id="list"></ul>
+    <div id="status"></div>
+    <div id="sentinel"></div>
+  </main>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
