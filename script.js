@@ -2,7 +2,7 @@
   'use strict';
 
   /* ===== SETTINGS ===== */
-  const DATA_FILE = 'profiles.txt'; // your text file
+  const DATA_FILES = ['Profiles.txt', 'profiles.txt', 'PROFILES.txt']; // tried in order (GitHub Pages is case-sensitive)
   const DELIMITER = '$';            // a line containing only this symbol
   const BATCH     = 40;             // cards added per scroll step
 
@@ -181,17 +181,27 @@
     $status.replaceChildren(frag);
   }
 
+  async function fetchText(){
+    let lastErr;
+    for (const f of DATA_FILES){
+      try{
+        const res = await fetch(f + '?v=' + Date.now(), { cache: 'no-cache' });
+        if (res.ok) return await res.text();
+        lastErr = new Error(f + ' ' + res.status);
+      }catch(e){ lastErr = e; }
+    }
+    throw lastErr;
+  }
+
   async function load(){
     skeletons();
     try{
-      const res = await fetch(DATA_FILE + '?v=' + Date.now(), { cache: 'no-cache' });
-      if (!res.ok) throw new Error(res.status);
-      all = parse(await res.text());
+      all = parse(await fetchText());
       view = all;
       reset();
       observe();
     }catch(e){
-      $status.innerHTML = '<div class="msg"><b>Could not load <code>' + DATA_FILE + '</code></b><br>Keep it in the same folder as <code>index.html</code> and open the site through GitHub Pages or a local server (browsers block reading text files from a <code>file://</code> page).</div>';
+      $status.innerHTML = '<div class="msg"><b>Could not load <code>' + DATA_FILES[0] + '</code></b><br>Keep it in the same folder as <code>index.html</code> with exactly this name (capital P), and open the site through GitHub Pages or a local server (browsers block reading text files from a <code>file://</code> page).</div>';
     }
   }
   load();
